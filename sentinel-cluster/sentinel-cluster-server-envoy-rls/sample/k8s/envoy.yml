@@ -82,7 +82,7 @@ data:
                     address: sentinel-rls-service
                     port_value: 10245
 ---
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: envoy-deployment-basic

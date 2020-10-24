@@ -11,7 +11,7 @@ data:
           value: "service_httpbin"
         count: 1
 ---
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sentinel-rls-server
@@ -41,6 +41,8 @@ spec:
           env:
             - name: SENTINEL_RLS_RULE_FILE_PATH
               value: "/tmp/sentinel/rule.yaml"
+            - name: SENTINEL_RLS_ACCESS_LOG
+              value: "on"
       volumes:
         - name: sentinel-rule-config
           configMap:
@@ -56,13 +58,15 @@ metadata:
   labels:
     name: sentinel-rls-service
 spec:
-  type: ClusterIP
+  type: NodePort
   ports:
     - port: 8719
       targetPort: 8719
+      nodePort: 30030
       name: sentinel-command
     - port: 10245
       targetPort: 10245
+      nodePort: 30031
       name: sentinel-grpc
   selector:
     app: sentinel
