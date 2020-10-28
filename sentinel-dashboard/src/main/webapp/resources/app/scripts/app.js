@@ -144,8 +144,8 @@ angular
 
       .state('dashboard.paramFlow', {
         templateUrl: 'app/views/param_flow.html',
-        url: '/paramFlow/:app',
-        controller: 'ParamFlowController',
+        url: '/v2/paramFlow/:app',
+        controller: 'ParamFlowControllerV2',
         resolve: {
           loadMyFiles: ['$ocLazyLoad', function ($ocLazyLoad) {
             return $ocLazyLoad.load({
@@ -224,8 +224,8 @@ angular
 
       .state('dashboard.authority', {
             templateUrl: 'app/views/authority.html',
-            url: '/authority/:app',
-            controller: 'AuthorityRuleController',
+            url: '/v2/authority/:app',
+            controller: 'AuthorityRuleControllerV2',
             resolve: {
                 loadMyFiles: ['$ocLazyLoad', function ($ocLazyLoad) {
                     return $ocLazyLoad.load({
@@ -240,7 +240,7 @@ angular
 
       .state('dashboard.degrade', {
         templateUrl: 'app/views/degrade.html',
-        url: '/degrade/:app',
+        url: '/v2/degrade/:app',
         controller: 'DegradeCtl',
         resolve: {
           loadMyFiles: ['$ocLazyLoad', function ($ocLazyLoad) {
@@ -256,7 +256,7 @@ angular
 
       .state('dashboard.system', {
         templateUrl: 'app/views/system.html',
-        url: '/system/:app',
+        url: '/v2/system/:app',
         controller: 'SystemCtl',
         resolve: {
           loadMyFiles: ['$ocLazyLoad', function ($ocLazyLoad) {
