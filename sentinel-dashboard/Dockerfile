@@ -1,20 +1,29 @@
-FROM amd64/buildpack-deps:buster-curl as installer
+# This is a multi-stage dockerfile. The builder stage extracts the directories that are needed later. Each of the COPY commands relates to the layers extracted by the jarmode.
+FROM registry.cn-hangzhou.aliyuncs.com/bawei_efk/java:8 as builder
+WORKDIR /opt
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} app.jar
+RUN java -Djarmode=layertools -jar app.jar extract
 
-ARG SENTINEL_VERSION=1.8.7
-
-RUN set -x \
-    && curl -SL --output /home/sentinel-dashboard.jar https://github.com/alibaba/Sentinel/releases/download/${SENTINEL_VERSION}/sentinel-dashboard-${SENTINEL_VERSION}.jar
-
-FROM openjdk:8-jre-slim
-
-# copy sentinel jar
-COPY --from=installer ["/home/sentinel-dashboard.jar", "/home/sentinel-dashboard.jar"]
-
-ENV JAVA_OPTS '-Dserver.port=8080 -Dcsp.sentinel.dashboard.server=localhost:8080'
-
-RUN chmod -R +x /home/sentinel-dashboard.jar
-
-EXPOSE 8080
-
-CMD java ${JAVA_OPTS} -jar /home/sentinel-dashboard.jar
-
+FROM registry.cn-hangzhou.aliyuncs.com/bawei_efk/java:8
+LABEL MAINTAINER="zhongchao.cheng"
+WORKDIR /opt
+COPY --from=builder opt/dependencies .
+COPY --from=builder opt/spring-boot-loader .
+COPY --from=builder opt/snapshot-dependencies .
+COPY --from=builder opt/application .
+ENV JAVA_OPTS='' \
+    ENV='dev' \
+    NACOS_SERVER_ADDR='127.0.0.1:8848'
+ENTRYPOINT ["sh", "-c", "java \
+    -Djava.security.egd=file:/dev/./urandom \
+    -XX:+UnlockExperimentalVMOptions \
+    -XX:+UseCGroupMemoryLimitForHeap \
+    -XX:+HeapDumpOnOutOfMemoryError \
+    -XX:HeapDumpPath=/opt/logs/HeapDumpOnOutOfMemoryError.log \
+    $JAVA_OPTS \
+    -XshowSettings:vm \
+    -Dnacos.server-addr=$NACOS_SERVER_ADDR \
+    -Dspring.profiles.active=$ENV \
+    org.springframework.boot.loader.JarLauncher \
+    ${0} ${@} "]
