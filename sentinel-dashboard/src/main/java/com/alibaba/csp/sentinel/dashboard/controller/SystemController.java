@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author leyou(lihao)
  */
-@RestController
+//@RestController
 @RequestMapping("/system")
 public class SystemController {
 

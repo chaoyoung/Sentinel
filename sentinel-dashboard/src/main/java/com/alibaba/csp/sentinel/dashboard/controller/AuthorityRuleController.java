@@ -47,7 +47,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Eric Zhao
  * @since 0.2.1
  */
-@RestController
+//@RestController
 @RequestMapping(value = "/authority")
 public class AuthorityRuleController {
 
