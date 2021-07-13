@@ -50,7 +50,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author leyou
  * @author Eric Zhao
  */
-@RestController
+//@RestController
 @RequestMapping(value = "/v1/flow")
 public class FlowControllerV1 {
 

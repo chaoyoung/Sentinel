@@ -49,7 +49,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Carpenter Lee
  * @author Eric Zhao
  */
-@RestController
+//@RestController
 @RequestMapping("/degrade")
 public class DegradeController {
 
