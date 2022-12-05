@@ -23,7 +23,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.nacos.api.PropertyKeyConst;
 import com.alibaba.nacos.api.config.ConfigFactory;
 import com.alibaba.nacos.api.config.ConfigService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -57,7 +56,7 @@ public class NacosConfig {
         if (StringUtil.isNotEmpty(nacosProperties.getNamespace())) {
             properties.put(PropertyKeyConst.NAMESPACE, nacosProperties.getNamespace());
         }
-        if (StringUtils.isNotEmpty(nacosProperties.getUsername())) {
+        if (StringUtil.isNotEmpty(nacosProperties.getUsername())) {
             properties.put(PropertyKeyConst.USERNAME, nacosProperties.getUsername());
         }
         if (StringUtil.isNotEmpty(nacosProperties.getPassword())) {
